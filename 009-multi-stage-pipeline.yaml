@@ -1,0 +1,26 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-18.04'
+
+stages:
+- stage: MyStage
+  jobs:
+  - job: MyJob
+  strategy:
+    maxParallel: 0
+    matrix:
+      JOB1:
+        Version: 1.0
+        AppName: foo
+      JOB2:
+        Version: 2.0
+        AppName: bar
+      JOB3:
+        Version: 10.0
+        AppName: foobar
+  steps:
+  - script:
+      echo "$(Version)"
+      echo "$(AppName)"
+    displayName: "Echo Variables"

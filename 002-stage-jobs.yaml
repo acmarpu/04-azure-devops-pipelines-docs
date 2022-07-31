@@ -1,0 +1,13 @@
+trigger: none
+
+pool:
+  vmimage: 'ubuntu-18.04'
+
+jobs:
+- job: A
+  steps:
+  - script: echo "A"
+
+- job: B
+  steps:
+  - script: echo "B"

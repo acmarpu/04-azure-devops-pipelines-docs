@@ -1,0 +1,23 @@
+trigger: none
+
+pool:
+  vmimage: 'ubuntu-18.04'
+
+stages:
+- stage: A
+  jobs:
+  - job: Windows
+    pool:
+      vmimage: 'windows-18.04'
+    steps:
+    - script: echo 'A1'
+  - job: macos
+    pool:
+      vmimage: 'ubuntu-18.04'
+    steps:
+    - script : echo 'A2'
+  - job: linux
+    pool:
+      vmimage: 'linux-18.04'
+    steps:
+    - script : echo 'A3'

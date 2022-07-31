@@ -1,0 +1,19 @@
+trigger: none
+
+pool:
+  vmimage: 'ubuntu-18.04'
+
+stages:
+- stage: A
+  jobs:
+  - job: myjob
+    timeoutInMinutes: 1
+    steps:
+    - task: InlinePowerShell@1
+      inputs:
+        script: |
+          Write-Output 'Going to sleep'
+
+          Start-Sleep -s 180
+          
+          write-Output 'Waking Up'
