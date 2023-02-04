@@ -22,3 +22,33 @@ trigger:
   branches:
     include:
     - '*'
+
+
+#Schedule trigger
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+    - main
+    - release/*
+    exclude:
+    - release/ancient/*
+- cron: "0 12 * * *"
+  displayName: Weekly sunday build
+  branches:
+    include:
+    - release/*
+  always: true
+
+# pipeline trigger
+  resources:
+  pipelines:
+  - pipeline: securitylib
+    source: security-lib-ci
+    trigger: 
+      branches:
+        include: 
+        - releases/*
+        exclude:
+        - releases/old*
