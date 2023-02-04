@@ -1,0 +1,17 @@
+trigger: none
+
+pool:
+  vmimage: 'ubuntu-18.04'
+
+stages:
+- stage: A
+  condition: succeeded{}
+
+- stage: B
+  condition: succeeded{A}
+
+- stage: C
+  dependsOn:
+  - A
+  - B
+  condition: failed{B}

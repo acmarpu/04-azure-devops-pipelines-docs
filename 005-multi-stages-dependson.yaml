@@ -10,13 +10,12 @@ stages:
     steps:
     - script: echo 'A1'
 
-
   - job: A2
     steps:
     - script : echo 'A2'
 
 - stage: B
-  dependsOn: A
+  dependsOn: A # stage B Dependencies on Stage A
   jobs:
   - job: B1
     steps:
@@ -27,7 +26,7 @@ stages:
     - script: echo 'B2'
 
 - stage: C
-  dependsOn: A
+  dependsOn: A #stage C Dependencies on Stage B
   jobs:
   - job: C1
     steps:
@@ -40,7 +39,7 @@ stages:
 - stage: D
   dependsOn:
   - B
-  - C
+  - C  ##stage D Dependencies on Stage B and C
   jobs:
   - job: D1
     steps:
