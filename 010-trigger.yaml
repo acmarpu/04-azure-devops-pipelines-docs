@@ -1,3 +1,7 @@
+#Continuous integration
+#Triggers cause a pipeline to run whenever an update is pushed to the specified branches or specified tags are pushed
+
+
 trigger:
   branches:
     include:
