@@ -1,0 +1,20 @@
+trigger:
+  branches:
+    include:
+    - master
+    - releases/*
+    exclude:
+    - releases/old*
+####################################
+trigger:
+  branches:
+    include:
+      - refs/tags/{tagname}
+    exclude:
+      - releases/tags/{othertagname}
+
+#####################################
+trigger:
+  branches:
+    include:
+    - '*'
