@@ -9,8 +9,10 @@ stages:
   - job: A1
     steps:
     - script: echo 'A1'
+
   - job: A2
     dependsOn: A1
+    condition: failed()
     steps:
     - script : echo 'A2'
 
