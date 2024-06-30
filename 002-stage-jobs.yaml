@@ -1,13 +1,32 @@
+You can organize your pipeline into jobs. Every pipeline has at least one job. 
+A job is a series of steps that run sequentially as a unit. 
+In other words, a job is the smallest unit of work that can be scheduled to run.
+
+
+
+##A few key considerations when we are talking about jobs:
+
+#Job names must be unique in a given stage....more on that in a minute
+#Variables can be loaded to the scope of the job
+#Every pipeline must have at least one job
+#The agent OS can be defined at the job level
+#By default, jobs are run in parallel. Can override by dependsOn[ job name]
+#Must have at least one job with no dependencies
+#Deployment jobs are a key concept
+#Azure DevOps Environments are a deployment job property. Next post forthcoming.
+
+
+
 trigger: none
 
 pool:
   vmimage: 'ubuntu-18.04'
 
 jobs:
-- job: A
+- job: iOS
   steps:
-  - script: echo "A"
+  - script: echo "iOS"
 
-- job: B
+- job: Windows
   steps:
-  - script: echo "B"
+  - script: echo "Windows"

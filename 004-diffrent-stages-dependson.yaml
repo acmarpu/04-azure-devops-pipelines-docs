@@ -1,0 +1,29 @@
+# Dependencies
+
+trigger: none
+
+pool:
+  vmimage: 'ubuntu-18.04'
+
+stages:
+- stage: iOS
+  jobs:
+  - job: iOS-18
+    steps:
+    - script: echo 'iOS-18'
+
+
+  - job: iOS-17
+    steps:
+    - script : echo 'iOS-17'
+
+- stage: Windows
+  dependsOn: [] #this removes the imlicit dependency on the previous stages
+  jobs:
+  - job: Windows-11
+    steps:
+    - script : echo 'Windows-11'
+  
+  - job: Windows-10
+    steps: 
+    - script: echo 'Windows-10'

@@ -1,0 +1,35 @@
+#This YAML configuration sets up an Azure Pipelines pipeline with two stages (Apple and Boy), 
+each containing two jobs (iOS-18, iOS-17 in stage iOS and Windows-11, Windows-10 in stage Windows).
+Each job executes a single step that runs a simple shell command (echo) to print a specific message ('iOS-18', 'iOS-17', 'Windows-10', 'Windows-11').
+
+
+
+trigger: none
+
+pool:
+  vmimage: 'ubuntu-18.04'
+
+stages:
+- stage: iOS
+  jobs:
+  - job: iOS-18
+    steps:
+    - script: echo 'iOS-18'
+
+
+  - job: iOS-17
+    steps:
+    - script : echo 'iOS-17'
+
+- stage: Windows
+  jobs:
+  - job: Windows-11
+    steps:
+    - script : echo 'Windows-11'
+  
+  - job: Windows-110
+    steps: 
+    - script: echo 'Windows-10'
+
+
+    
