@@ -1,0 +1,22 @@
+
+condition: failed() is a way to specify that a job should only run if the previous job (or step) has failed.
+
+
+trigger: none
+
+pool:
+  vmimage: 'ubuntu-18.04'
+
+stages:
+- stage: iOS
+  jobs:
+  - job: iOS-18
+    steps:
+    - script: echo 'iOS-18'
+
+  - job: iOS-17
+    dependsOn: iOS-18
+    condition: failed()
+    steps:
+    - script : echo 'iOS-17'
+
