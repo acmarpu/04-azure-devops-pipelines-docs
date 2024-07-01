@@ -1,5 +1,4 @@
-Each job has its own pool definition specifying a different VM image
-
+# Each job has its own pool definition specifying a different VM image
 
 trigger: none
 

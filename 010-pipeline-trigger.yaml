@@ -1,7 +1,6 @@
 #Continuous integration
 #Triggers cause a pipeline to run whenever an update is pushed to the specified branches or specified tags are pushed
 
-
 trigger:
   branches:
     include:
@@ -23,7 +22,7 @@ trigger:
     include:
     - '*'
 
-
+#####################################
 #Schedule trigger
 schedules:
 - cron: "0 0 * * *"
@@ -41,6 +40,7 @@ schedules:
     - release/*
   always: true
 
+#####################################
 # pipeline trigger
   resources:
   pipelines:
