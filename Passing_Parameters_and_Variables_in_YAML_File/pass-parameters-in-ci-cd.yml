@@ -1,0 +1,100 @@
+## Define parameters in YAML pipeline
+# How to Define parameters
+
+# parameters must contain a name and datatype
+# parameters cannot be opetional
+# A default value needs to be assigned in YAML file
+# - or when we run pipeline. if we do not assigan a
+# - default value or set default to false, the first
+# - available value will be used.
+# the parameters section in a YAML defines what parameters are availble
+
+# How to access parameters
+#  parameters are access just before the pipeline runs so that value
+# - surrounded by ${{}} are replaced with parameter value
+
+#Runtime Parameters
+#Runtime parameters are parameters that you define for a pipeline and call from within that same pipeline. When you define a runtime parameter, 
+# - you enter the default value to use. When you create or edit a job that includes a pipeline with runtime parameters, 
+# - you can specify another value to override the default. When the job starts, the value replaces the default value of the runtime parameter
+
+## When the pipeline run. we select the pool image.
+# - if you do not make a selection, the default option, macOS gets used.
+
+################################################
+## Ex-1
+parameters:
+  - name: image
+    displayName: pool image
+    type: string
+    default: macos-latest
+    values:
+      - windows-latest
+      - ubuntu-latest
+
+steps:
+- script: echo hello, world
+  displayName: "parameters are define for pool"     
+
+
+
+
+#####################################################
+## Ex-2
+
+trigger: none
+
+parameters:
+  - name: image
+    displayName: pool image
+    type: string
+    default: macos-latest
+    values:
+      - windows-latest
+      - ubuntu-latest
+
+stages:
+  - stage: Build
+    jobs:
+      - job: BuildJob
+        pool:
+         vmImage: ${{parameters.image}}
+        steps:
+            - script: echo bulding $(build.Buildnumber) with ${{parameters.Image}}
+
+
+
+####################################################
+## Ex-3
+# condition based parameters
+
+trigger: none
+
+
+parameters:
+  - name: image
+    displayName: pool image
+    type: string
+    default: macos-latest
+    values:
+      - windows-latest
+      - ubuntu-latest
+pool:
+   vmImage: ubuntu-latest
+
+variables:
+- name: myvar
+  value: ${{parameters.image}}
+
+steps:
+   - task: PoweShell@2
+     inputs:
+       targetType: 'inline'
+       script:
+         # write your powershell command here
+         write-host "hello world 
+     condition: or { eq (variables.myvar, 'ubuntu-latest'), eq(variables.myvar, 'windows-lates')}
+
+##
+
+
