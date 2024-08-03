@@ -13,8 +13,8 @@
 #  parameters are access just before the pipeline runs so that value
 # - surrounded by ${{}} are replaced with parameter value
 
-#Runtime Parameters
-#Runtime parameters are parameters that you define for a pipeline and call from within that same pipeline. When you define a runtime parameter, 
+# Runtime Parameters
+# Runtime parameters are parameters that you define for a pipeline and call from within that same pipeline. When you define a runtime parameter, 
 # - you enter the default value to use. When you create or edit a job that includes a pipeline with runtime parameters, 
 # - you can specify another value to override the default. When the job starts, the value replaces the default value of the runtime parameter
 
@@ -93,8 +93,7 @@ steps:
        script:
          # write your powershell command here
          write-host "hello world 
-     condition: or { eq (variables.myvar, 'ubuntu-latest'), eq(variables.myvar, 'windows-lates')}
+      condition: or { eq (variables.myvar, 'ubuntu-latest'), eq(variables.myvar, 'windows-lates')}
 
-##
 
 
