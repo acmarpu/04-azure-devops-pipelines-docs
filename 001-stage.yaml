@@ -4,9 +4,9 @@
 #pool: Defines the agent pool and operating system image for the pipeline jobs.
 #steps: Defines the sequence of tasks or commands to be executed in the pipeline.
 
-stages: defines the different stages of the pipeline. 
-Stages allow you to break down your pipeline into logical sections, 
-typically representing different phases or environments of your deployment process.
+# stages: defines the different stages of the pipeline. 
+# Stages allow you to break down your pipeline into logical sections, 
+# typically representing different phases or environments of your deployment process.
 
 
 trigger: none
