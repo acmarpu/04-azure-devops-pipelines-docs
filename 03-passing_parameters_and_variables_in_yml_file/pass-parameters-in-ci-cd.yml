@@ -7,6 +7,8 @@
 # - or when we run pipeline. if we do not assigan a
 # - default value or set default to false, the first
 # - available value will be used.
+
+
 # the parameters section in a YAML defines what parameters are availble
 
 # How to access parameters
@@ -21,8 +23,9 @@
 ## When the pipeline run. we select the pool image.
 # - if you do not make a selection, the default option, macOS gets used.
 
-################################################
-## Ex-1
+#---------------------------------------------------------------------
+trigger: none
+
 parameters:
   - name: image
     displayName: pool image
@@ -39,8 +42,8 @@ steps:
 
 
 
-#####################################################
-## Ex-2
+#---------------------------------------------------------------------
+#is telling Azure DevOps which build agent (OS image) to use, and it’s using a parameter to make that decision dynamically.
 
 trigger: none
 
@@ -60,40 +63,41 @@ stages:
         pool:
          vmImage: ${{parameters.image}}
         steps:
-            - script: echo bulding $(build.Buildnumber) with ${{parameters.Image}}
+            - script: echo building $(build.Buildnumber) with ${{parameters.Image}}
 
 
 
-####################################################
-## Ex-3
-# condition based parameters
+#---------------------------------------------------------------------
+# Example 3: Conditional execution based on parameter
 
 trigger: none
 
-
 parameters:
   - name: image
-    displayName: pool image
+    displayName: "Pool Image"
     type: string
-    default: macos-latest
+    default: ubuntu-latest
     values:
       - windows-latest
       - ubuntu-latest
+
 pool:
-   vmImage: ubuntu-latest
+  vmImage: ubuntu-latest  # Static pool for the pipeline itself
 
 variables:
-- name: myvar
-  value: ${{parameters.image}}
+  - name: myvar
+    value: ${{ parameters.image }}
 
 steps:
-   - task: PoweShell@2
-     inputs:
-       targetType: 'inline'
-       script:
-         # write your powershell command here
-         write-host "hello world 
-      condition: or { eq (variables.myvar, 'ubuntu-latest'), eq(variables.myvar, 'windows-lates')}
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Hello World! Selected image is: $(myvar)"
+    condition: or(eq(variables['myvar'], 'ubuntu-latest'), eq(variables['myvar'], 'windows-latest'))
+    displayName: "Conditional PowerShell Step"
+
+
 
 
 

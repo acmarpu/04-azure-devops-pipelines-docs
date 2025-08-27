@@ -6,18 +6,13 @@
 ## Define variable in YAML pipeline which we created in Variable group
 
 # The following examples demonstrates all three
-varibles:
-# a reqular variable 
-- name: myvariable
-  value: myvalue
-# a variable group
-- group: myvariblegroup
-# a reference to a variable template
-- template: demofolder/myvariabletemplate.yml
 
+#----------------------------------------------------------------------------------------------
+# ---------------------------
+# File: pass-variables-in-ci-cd.yml
+# Purpose: Demonstrate defining variables from multiple sources
+# ---------------------------
 
-
-# define variable in pipelien
 trigger:
 - main
 
@@ -25,16 +20,25 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-- name: my-reg-var
-  value: reg-var
-- group: my-variable-group # this variable group from pipeline library
-- template: myvariabletemplate.yml # this is separate yaml file and if it is in separate folder metion like below
-- template: myvariabletemplate.yml
+  # 1. Inline variable
+  - name: myvariable
+    value: myvalue
+
+  # 2. Variable group from Azure DevOps Library
+  - group: my-variable-group
+
+  # 3. Variable template (external YAML file)
+  - template: demofolder/myvariabletemplate.yml
 
 steps:
-- script: echo $(my-variable-group)
+  - script: |
+      echo "Inline variable: $(myvariable)"
+      echo "Variable from group: $(groupVariableName)"       # Replace with actual variable name from group
+      echo "Variable from template: $(templateVariableName)" # Replace with actual variable name from template
+    displayName: "Print All Variables"
 
-#######################################################################################
+
+#----------------------------------------------------------------------------------------------
 # Variables scope and use of variables at Global and Stage and Job level
 
 trigger:
@@ -49,33 +53,40 @@ variables:         # Global level
 
 stages:
   - stage: stageA
-    displayName: stageA
+    displayName: Stage A
     variables:      # Stage level
-    - name: stgAvar
-      value: valuestg
+      - name: stgAvar
+        value: valuestg
 
     jobs:
       - job: JobA
         variables:  # Job level
-        - name: Jobvar
-          value: jobstg
-  - stage: stageB
-    displayName: stageB
-    jobs:
-      - job: privatevalue jobs
+          - name: Jobvar
+            value: jobstg
         steps:
-          - bash: echo $(globalvar) 
-          - bash: echo $(stgAvar)
-          - bash: echo $(Jobvar)
+          - bash: |
+              echo "Global variable: $(globalvar)"
+              echo "Stage A variable: $(stgAvar)"
+              echo "Job A variable: $(Jobvar)"
 
+  - stage: stageB
+    displayName: Stage B
+    jobs:
+      - job: privatevalue-jobs
+        steps:
+          - bash: |
+              echo "Global variable: $(globalvar)"
+              echo "Stage A variable: $(stgAvar)"   # WILL BE EMPTY
+              echo "Job A variable: $(Jobvar)"     # WILL BE EMPTY
 
+      - job: JobA
+        steps:
+          - bash: echo "##vso[task.setvariable variable=SharedValue;isOutput=true]HelloFromStageA"
+            name: setOutput
 
-
-
-Ref: https://www.youtube.com/watch?v=7CsmBO8KR4U&ab_channel=geralexgr
-ref: https://www.youtube.com/watch?v=S-copHTFW2I&list=PL8NJ7_kgKeUqvN78Wg2Ku2KJO98WjqIzn&index=3&ab_channel=VirenAutomationTesting
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
+        dependsOn: stageA
+        variables:
+          SharedValueFromStageA: $[ dependencies.stageA.outputs['JobA.setOutput.SharedValue'] ]
+        steps:
+          - bash: echo "Shared value: $(SharedValueFromStageA)"
 
