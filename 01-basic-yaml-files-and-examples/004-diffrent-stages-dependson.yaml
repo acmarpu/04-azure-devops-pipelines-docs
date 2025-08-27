@@ -1,29 +1,33 @@
-# Dependencies
+# Dependencies Example
+# 'dependsOn: []' removes the implicit dependency on previous stages, making this stage run in parallel.
 
+
+# For more details about 'trigger', refer to the file: 001-trigger-pr-pool.yaml
 trigger: none
 
+
+# For more details about 'pool', refer to the file: 001-trigger-pr-pool.yaml
 pool:
   vmimage: 'ubuntu-18.04'
 
-stages:
-- stage: iOS
+stages:  #For more details about 'stage', refer to the file: 003-different-stages-jobs.yaml
+- stage: car
   jobs:
-  - job: iOS-18
+  - job: car-latest
     steps:
-    - script: echo 'iOS-18'
+    - script: echo 'car-latest'
 
-
-  - job: iOS-17
+  - job: car-old
     steps:
-    - script : echo 'iOS-17'
+    - script: echo 'car-old'
 
-- stage: Windows
-  dependsOn: [] #this removes the imlicit dependency on the previous stages
+- stage: byke
+  dependsOn: []  # This removes the implicit dependency on the previous stages
   jobs:
-  - job: Windows-11
+  - job: byke-latest
     steps:
-    - script : echo 'Windows-11'
+    - script: echo 'byke-latest'
   
-  - job: Windows-10
+  - job: byke-old
     steps: 
-    - script: echo 'Windows-10'
+    - script: echo 'byke-old'

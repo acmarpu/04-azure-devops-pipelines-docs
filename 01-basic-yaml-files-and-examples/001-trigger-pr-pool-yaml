@@ -1,0 +1,107 @@
+#A pipeline is made up of one or more stages
+
+#A stage is a way of organizing jobs in a pipeline and each stage can have one or more jobs
+
+
+#pool: Defines the agent pool and operating system image for the pipeline jobs.
+#steps: Defines the sequence of tasks or commands to be executed in the pipeline.
+
+# stages: defines the different stages of the pipeline. 
+# Stages allow you to break down your pipeline into logical sections, 
+# typically representing different phases or environments of your deployment process.
+
+
+#This specifies that the pipeline does not have an automatic trigger associated with it.
+trigger: none
+
+#The pipeline runs automatically on any branch when there is a new commit.
+trigger:
+  - "*"
+
+# The pipeline runs automatically only when there is a new commit on the main branch.
+trigger:
+  branches:
+    include:
+      - main
+
+# The pipeline runs automatically only when there is a new commit on either the main or develop branches.
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+
+
+# The pipeline runs automatically on any branch except for branches that start with "experimental/".
+trigger:
+  branches:
+    include:
+      - "*"
+    exclude:
+      - experimental/*
+
+# The pipeline runs automatically only when there is a new commit on the main branch and when changes are made to files in the src directory, 
+# - but not when changes are made to files in the docs directory.
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - src/**
+    exclude:
+      - docs/**
+
+# The pipeline does not run automatically based on branch or path changes.
+pr: none
+
+
+# The pipeline runs automatically on any branch when there is a new pull request.
+pr:
+  branches:
+    include:
+      - main
+
+# The pipeline runs automatically only when there is a new pull request targeting the main branch and when changes 
+# -are made to files in the src directory, 
+# but not when changes are made to files in the docs directory.
+#The pipeline runs every Monday at 2:00 AM on the main branch.
+#Uses cron syntax for scheduling.
+schedules:
+- cron: "0 2 * * 1"
+  displayName: Weekly Build
+  branches:
+    include:
+      - main
+  always: true
+
+
+
+#Runs CI when commits are pushed to main or develop.
+#Runs PR validation when PR targets main.
+
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+pr:
+  branches:
+    include:
+      - main
+
+#The pool keyword in Azure DevOps YAML specifies the agent pool where your pipeline will run.
+#An agent pool is a collection of build agents that execute pipeline jobs.
+
+pool:
+  vmimage: 'ubuntu-18.04'
+
+
+#A simple pipeline with one stage, one job, and one step.
+#the steps section defines the sequence of actions your pipeline will perform.
+#Each step can be a script, a task, or a template.
+steps:
+- script: echo 'Hello world'
+
+

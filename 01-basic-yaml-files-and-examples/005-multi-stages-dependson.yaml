@@ -1,0 +1,56 @@
+# Demonstrates multiple stages with different dependency patterns using dependsOn.
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'  # Corrected key and value
+
+stages:
+# Stage 1: car
+- stage: car
+  jobs:
+  - job: car-latest
+    steps:
+    - script: echo 'car-latest'
+
+  - job: car-old
+    steps:
+    - script: echo 'car-old'
+
+# Stage 2: byke (depends on 'car')
+- stage: byke
+  dependsOn: car  # Stage 'byke' depends on Stage 'car'
+  jobs:
+  - job: byke-latest
+    steps:
+    - script: echo 'byke-latest'
+  
+  - job: byke-old
+    steps: 
+    - script: echo 'byke-old'
+
+# Stage 3: bus (depends on 'car')
+- stage: bus
+  dependsOn: car  # Stage 'bus' depends on Stage 'car'
+  jobs:
+  - job: bus-latest
+    steps:
+    - script: echo 'bus-latest'
+  
+  - job: bus-public
+    steps: 
+    - script: echo 'bus-public'
+
+# Stage 4: train (depends on both 'byke' and 'bus')
+- stage: train
+  dependsOn:
+    - byke
+    - bus  # Stage 'train' depends on Stage 'byke' and 'bus'
+  jobs:
+  - job: train-express
+    steps:
+    - script: echo 'train-express'
+  
+  - job: train-passenger
+    steps: 
+    - script: echo 'train-passenger'

@@ -1,26 +1,44 @@
-trigger: none
+# What is a Matrix Strategy?
+
+# Purpose: To execute a job multiple times, each with a different set of input parameters (variables).
+
+# Use Cases:
+# ✔ Testing your app on multiple OS versions (Windows, macOS, Linux)
+# ✔ Building multiple variants of your app (debug, release)
+# ✔ Running with different environment configurations (different databases, different API versions)
+
+# You define a matrix inside the job.
+# Each entry in the matrix is a key (like JOB1, JOB2) with its own variables.
+# Azure DevOps creates one job for each matrix entry.
+# All those jobs can run in parallel (controlled by maxParallel).
+
+
+# 009-different-strategy-pipeline.yml
+# Demonstrates a matrix strategy in Azure Pipelines
+
+trigger: none  # No automatic trigger
 
 pool:
-  vmImage: 'ubuntu-18.04'
+  vmImage: 'ubuntu-18.04'  # Use Ubuntu agent
 
 stages:
 - stage: MyStage
   jobs:
   - job: MyJob
-  strategy:
-    maxParallel: 0
-    matrix:
-      JOB1:
-        Version: 1.0
-        AppName: foo
-      JOB2:
-        Version: 2.0
-        AppName: bar
-      JOB3:
-        Version: 10.0
-        AppName: foobar
-  steps:
-  - script:
-      echo "$(Version)"
-      echo "$(AppName)"
-    displayName: "Echo Variables"
+    strategy:
+      maxParallel: 3    # Number of jobs to run in parallel
+      matrix:
+        JOB1:
+          Version: 1.0
+          AppName: food
+        JOB2:
+          Version: 2.0
+          AppName: sweet
+        JOB3:
+          Version: 10.0
+          AppName: drink
+    steps:
+    - script: |
+        echo "Version: $(Version)"
+        echo "AppName: $(AppName)"
+      displayName: "Echo Variables"

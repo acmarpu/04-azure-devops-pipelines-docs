@@ -1,24 +1,33 @@
-trigger: none
+# 008-jobs-timeout.yaml
+# Demonstrates setting a timeout for a job in Azure Pipelines
+
+trigger: none  # No automatic trigger for this pipeline
 
 pool:
-  vmimage: 'ubuntu-18.04'
+  vmImage: 'ubuntu-18.04'  # The pipeline uses an Ubuntu agent
 
 stages:
 - stage: iOS
   jobs:
   - job: myjob
-    timeoutInMinutes: 1
+    timeoutInMinutes: 1   # Timeout for this job (in minutes)
     steps:
     - task: InlinePowerShell@1
       inputs:
         script: |
           Write-Output 'Going to sleep'
-          Start-Sleep -s 180
-          write-Output 'Waking Up'
+          Start-Sleep -s 180  # Sleep for 180 seconds (3 minutes)
+          Write-Output 'Waking Up'
 
-timeoutInMinutes: 1 sets a timeout of 1 minute for the job myjob. If the job execution exceeds this limit, 
-                  it will be automatically terminated.
+# timeoutInMinutes: 1 → Job is allowed to run for only 1 minute.
+# The Start-Sleep -s 180 command makes the script sleep for 3 minutes.
+# Since the job exceeds 1 minute, the pipeline will forcefully cancel the job.
 
 # The timeout of 1 minute specified for myjob suggests that even though the sleep duration is 180 seconds, 
 # the job itself is expected to complete within 1 minute. If the sleep duration exceeds 1 minute, 
 # the job will be forcibly terminated due to the timeout setting.
+
+
+#The timeout applies to the entire job, not individual steps.
+#You can also set step-level timeouts using timeoutInMinutes under each step.
+#Default job timeout is 60 minutes if not specified.

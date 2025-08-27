@@ -1,0 +1,49 @@
+# 006-stages-and-jobs-conditions.yaml
+# Demonstrates using condition: failed(), succeeded(), etc.
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-18.04'
+
+stages:
+# Stage 1: car
+- stage: car
+  jobs:
+  - job: car-latest
+    steps:
+    - script: echo 'Running car-latest'
+
+  - job: car-old
+    dependsOn: car-latest
+    condition: failed()  # Runs only if car-latest fails
+    steps:
+    - script: echo 'Running car-old because car-latest failed'
+
+# Stage 2: byke (runs only if all previous succeeded)
+- stage: byke
+  condition: succeeded()
+  jobs:
+  - job: byke-latest
+    steps:
+    - script: echo 'Running byke stage because previous stages succeeded'
+
+# Stage 3: bus (runs only if car succeeded)
+- stage: bus
+  dependsOn: car
+  condition: succeeded('car')
+  jobs:
+  - job: bus-latest
+    steps:
+    - script: echo 'Running bus because car succeeded'
+
+# Stage 4: train (runs only if byke failed)
+- stage: train
+  dependsOn:
+    - car
+    - byke
+  condition: failed('byke')
+  jobs:
+  - job: train-latest
+    steps:
+    - script: echo 'Running train because byke failed'

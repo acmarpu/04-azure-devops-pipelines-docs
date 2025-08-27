@@ -1,0 +1,25 @@
+# Jobs in Azure DevOps are the smallest schedulable unit of work in a pipeline.
+# A job consists of a series of steps that run sequentially on the same agent.
+# Every pipeline has at least one job, but it can have multiple jobs for better organization.
+# Job names must be unique within a stage.
+# Variables can be scoped to a job, making them local to that job.
+# An agent pool or image can be defined at the pipeline level or job level.
+# By default, jobs run in parallel unless you define dependencies with dependsOn.
+# You must have at least one job with no dependencies, otherwise, the pipeline won't start.
+# There is a concept of deployment jobs, which are special jobs that deploy to environments.
+
+
+
+trigger: none
+
+pool:
+  vmimage: 'ubuntu-18.04'
+
+jobs:
+- job: car
+  steps:
+  - script: echo "car"
+
+- job: byke
+  steps:
+  - script: echo "byke"

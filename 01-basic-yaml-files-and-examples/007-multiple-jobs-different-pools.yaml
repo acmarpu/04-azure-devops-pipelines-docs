@@ -1,0 +1,24 @@
+# Demonstrates multiple jobs in the same stage, each with its own pool (different VM image)
+
+trigger: none
+
+stages:
+- stage: car
+  jobs:
+  - job: byke
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - script: echo 'byke job running on Windows'
+
+  - job: bus
+    pool:
+      vmImage: 'macOS-latest'
+    steps:
+    - script: echo 'bus job running on macOS'
+
+  - job: train
+    pool:
+      vmImage: 'ubuntu-18.04'
+    steps:
+    - script: echo 'train job running on Ubuntu'

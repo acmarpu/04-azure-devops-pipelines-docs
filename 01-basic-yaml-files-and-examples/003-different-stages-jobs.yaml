@@ -1,0 +1,50 @@
+# This YAML configuration defines an Azure Pipelines pipeline with two stages: 'car' and 'byke'.
+# Each stage contains two jobs:
+#   - Stage 'car': jobs 'car-latest' and 'car-old'
+#   - Stage 'byke': jobs 'byke-latest' and 'byke-old'
+# Each job runs a single step that executes a shell command (echo) to print a specific message:
+#   - 'car-latest', 'car-old', 'byke-latest', or 'byke-old'
+
+
+
+
+# For more details about 'trigger', refer to the file: 001-trigger-pr-pool.yaml
+trigger: none
+
+
+# For more details about 'pool', refer to the file: 001-trigger-pr-pool.yaml
+pool:
+  vmimage: 'ubuntu-18.04'
+
+# Define stages → logical groupings of jobs
+stages:
+
+# First Stage: car
+- stage: car
+  jobs:   # For more details about 'jobs', refer to the file: 002-jobs.yaml
+    # Job 1: car-latest
+    - job: car-latest
+      steps:
+        - script: echo 'car-latest'  # Prints "car-latest" in logs
+
+    # Job 2: car-old
+    - job: car-old
+      steps:
+        - script: echo 'car-old' # Prints "car-old" in logs
+
+# Second Stage: byke
+- stage: byke
+  jobs:
+    # Job 1: byke-latest
+    - job: byke-latest
+      steps:
+        - script: echo 'byke-latest' # Prints "byke-latest" in logs
+    
+    # Job 2: byke-old
+    - job: byke-old
+      steps:
+        - script: echo 'byke-old' # Prints "byke-old" in logs
+
+
+
+    
